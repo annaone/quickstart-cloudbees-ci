@@ -5,7 +5,7 @@ Deploying this Partner Solution for a new virtual private cloud (VPC) with defau
 
 image::https://d1.awsstatic.com/partner-network/QuickStart/datasheets/cloudbees-core-architecture-on-aws.f458a95880735d9329884e9ea2673c85a56abd9b.png[Partner Solution architecture for CloudBees CI on AWS]
 
-As shown in <<Figure 1>>, the Partner Solution sets up the following:
+The Partner Solution sets up the following:
 
 * A highly available architecture that spans three Availability Zones.*
 * A VPC configured with three public and three private subnets (one public and one 
