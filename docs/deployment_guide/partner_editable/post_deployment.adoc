@@ -1,1 +1,26 @@
+# Post Deployment Steps
 
+## Step 1. Activate CloudBees CI
+1. Open the URL from step 2.9 in the previous section. You should see an activation screen, as shown in **figure 3**.
+
+image::https://github.com/ikurtz/quickstart-cloudbees-ci/blob/doc-edits/docs/images/unlock-cbci.png[CloudBees CI Activation Screen]
+
+2.  Obtain the initialAdminPassword by accessing the EKS cluster from the bastion host. To log in to the bastion host, find the BastionIP in the Outputs tab of the base CloudBees CI stack. Then connect from your local terminal to the bastion host by using SSH, with a command similar to the following:
+
+`chmod 400 ~/cloudbees-core.pem && ssh -i ~/cloudbees-core.pem ec2-
+user@3.93.136.235`
+
+where `cloudbees-core.pem` refers to the key pair you created earlier in this guide.
+
+3. Use **kubectl** on the bastion host to print the **initialAdminPassword** with the following command:
+
+`kubectl -n cloudbees-core exec cjoc-0 -- cat /var/jenkins_home/secrets/initialAdminPassword`
+
+4. Use the **initialAdminPassword** to proceed with the Getting Started wizard.
+5. Choose the **Request a trial license** button and fill in the form to use CloudBees CI for 15 days, free of charge.
+6. Choose **Install suggested plugins** to obtain the recommended set of plugins, or choose **Select plugins to install** to customize the installation, if you’re an advanced user.
+7. If an incremental upgrade is available, we recommend that you choose the **Install** button to install it.
+8. Create an administrator or choose **Continue as admin** to proceed with the default administrator account. (The administrator’s name is **admin**, and the password is determined by **initialAdminPassword**.)
+9. Ensure that the Jenkins URL looks correct on the **Instance Configuration** screen, 
+and then choose **Save and Finish**.
+10. If required, choose the **Restart** button to restart Operations Center and complete the Getting Started wizard.
