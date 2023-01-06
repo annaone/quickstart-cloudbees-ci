@@ -5,16 +5,16 @@
 
 image::https://github.com/ikurtz/quickstart-cloudbees-ci/blob/doc-edits/docs/images/unlock-cbci.png[CloudBees CI Activation Screen]
 
-2.  Obtain the initialAdminPassword by accessing the EKS cluster from the bastion host. To log in to the bastion host, find the BastionIP in the Outputs tab of the base CloudBees CI stack. Then connect from your local terminal to the bastion host by using SSH, with a command similar to the following:
+2. Obtain the initialAdminPassword by accessing the EKS cluster from the bastion host. To log in to the bastion host, find the BastionIP in the Outputs tab of the base CloudBees CI stack. Then connect from your local terminal to the bastion host by using SSH, with a command similar to the following:
 
-`chmod 400 ~/cloudbees-core.pem && ssh -i ~/cloudbees-core.pem ec2-
+* `chmod 400 ~/cloudbees-core.pem && ssh -i ~/cloudbees-core.pem ec2-
 user@3.93.136.235`
 
-where `cloudbees-core.pem` refers to the key pair you created earlier in this guide.
+* where `cloudbees-core.pem` refers to the key pair you created earlier in this guide.
 
 3. Use **kubectl** on the bastion host to print the **initialAdminPassword** with the following command:
 
-`kubectl -n cloudbees-core exec cjoc-0 -- cat /var/jenkins_home/secrets/initialAdminPassword`
+* `kubectl -n cloudbees-core exec cjoc-0 -- cat /var/jenkins_home/secrets/initialAdminPassword`
 
 4. Use the **initialAdminPassword** to proceed with the Getting Started wizard.
 5. Choose the **Request a trial license** button and fill in the form to use CloudBees CI for 15 days, free of charge.
