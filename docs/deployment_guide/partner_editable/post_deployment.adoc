@@ -5,22 +5,55 @@
 
 image::https://github.com/ikurtz/quickstart-cloudbees-ci/blob/doc-edits/docs/images/unlock-cbci.png[CloudBees CI Activation Screen]
 
-2. Obtain the initialAdminPassword by accessing the EKS cluster from the bastion host. To log in to the bastion host, find the BastionIP in the Outputs tab of the base CloudBees CI stack. Then connect from your local terminal to the bastion host by using SSH, with a command similar to the following:
+1. Obtain the initialAdminPassword by accessing the EKS cluster from the bastion host. To log in to the bastion host, find the BastionIP in the Outputs tab of the base CloudBees CI stack. Then connect from your local terminal to the bastion host by using SSH, with a command similar to the following:
 
 * `chmod 400 ~/cloudbees-core.pem && ssh -i ~/cloudbees-core.pem ec2-
 user@3.93.136.235`
 
 * where `cloudbees-core.pem` refers to the key pair you created earlier in this guide.
 
-3. Use **kubectl** on the bastion host to print the **initialAdminPassword** with the following command:
+2. Use **kubectl** on the bastion host to print the **initialAdminPassword** with the following command:
 
 * `kubectl -n cloudbees-core exec cjoc-0 -- cat /var/jenkins_home/secrets/initialAdminPassword`
 
-4. Use the **initialAdminPassword** to proceed with the Getting Started wizard.
-5. Choose the **Request a trial license** button and fill in the form to use CloudBees CI for 15 days, free of charge.
-6. Choose **Install suggested plugins** to obtain the recommended set of plugins, or choose **Select plugins to install** to customize the installation, if you’re an advanced user.
-7. If an incremental upgrade is available, we recommend that you choose the **Install** button to install it.
-8. Create an administrator or choose **Continue as admin** to proceed with the default administrator account. (The administrator’s name is **admin**, and the password is determined by **initialAdminPassword**.)
-9. Ensure that the Jenkins URL looks correct on the **Instance Configuration** screen, 
+3. Use the **initialAdminPassword** to proceed with the Getting Started wizard.
+4. Choose the **Request a trial license** button and fill in the form to use CloudBees CI for 15 days, free of charge.
+5. Choose **Install suggested plugins** to obtain the recommended set of plugins, or choose **Select plugins to install** to customize the installation, if you’re an advanced user.
+6. If an incremental upgrade is available, we recommend that you choose the **Install** button to install it.
+7. Create an administrator or choose **Continue as admin** to proceed with the default administrator account. (The administrator’s name is **admin**, and the password is determined by **initialAdminPassword**.)
+8. Ensure that the Jenkins URL looks correct on the **Instance Configuration** screen, 
 and then choose **Save and Finish**.
-10. If required, choose the **Restart** button to restart Operations Center and complete the Getting Started wizard.
+9. If required, choose the **Restart** button to restart Operations Center and complete the Getting Started wizard.
+
+## Getting started with CloudBees CI
+Before you use CloudBees CI on AWS, review the https://go.cloudbees.com/docs/cloudbees-core/cloud-reference-architecture/ra-for-eks/[CloudBees CI Reference Architecture^] for Amazon EKS. You can also use the free, self-paced https://go.cloudbees.com/training/index.html[training^] offered by CloudBees to learn best practices for administration, usage, CI/CD pipeline development, and more.
+
+The popularity of Jenkins is due, in large part, to the plugins ecosystem. You can add new functionality with plugins. For example, you can integrate CloudBees CI with the following tools and services:
+
+* Git, to check out code every time a developer commits to a branch
+* Maven and JUnit, to build a Java application and publish the test results
+* AWS Elastic Beanstalk, to deploy the Java application
+
+Although it is possible to add plugins to Operations Center, this component of the CloudBees CI architecture serves a different purpose than a Managed Master and offers a limited set of plugins in its plugin update center. To make full use of CloudBees CI, provision a Managed Controller before creating the first CI/CD pipeline. These topics are covered in a https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/getting-started/[getting started^] guide on the CloudBees website.
+
+## Targeting agent pools from a pipeline
+
+> **Note**
+> This section assumes that you are familiar with Pipeline and Jenkinsfile. If you are unfamiliar with them, see https://jenkins.io/doc/book/pipeline/jenkinsfile/[Using a Jenkinsfile^].
+
+If no additional configuration is provided, agent pods launched by the Kubernetes plugin run in the Masters partition of the EKS cluster. To validate this behavior, run the following commands on the bastion host while a pipeline is running:
+
+`#display nodes with partition info
+kubectl get nodes -o custom-columns=NAME:.metadata.name,PARTITION:.metadata.labels.partition --
+sort-by=.metadata.labels.partition
+
+#display pods with node info
+kubectl get pod -n cloudbees-core -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName`
+
+Agents are resource intensive, so we recommend separating them from masters. The Partner Solution provides a method for doing so with the additional agent pools.
+
+CloudBees CI enables you to https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/agents/#managing-agents[configure a Kubernetes agent^] globally in Operations Center and to set default values for pods and containers that are launched by the Kubernetes shared cloud. You can use these features to enforce which partition an agent runs on, individually or globally.
+
+To configure agents to run on a given partition, you must know how to https://kubernetes.io/docs/concepts/configuration/assign-pod-node/[Assign Pods to Nodes^] and use https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[Taints and Tolerations^] in Kubernetes, which are demonstrated in the following example.
+
+One way to define an agent pod is to place its Kubernetes YAML configuration directly into a `Jenkinsfile`, instead of configuring the agent through the UI. This approach stores the entire CI/CD pipeline (including the agent definition) in source control. This has the added benefits of code reviews and a full audit trail of changes.
