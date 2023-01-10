@@ -64,9 +64,8 @@ Follow these steps to create a basic pipeline that runs in the Regular agents pa
 2. From the list of item types, choose **Pipeline**, enter an item name (for example, `declarative-pipeline-spot-agents`), and then choose **OK**.
 3. Scroll down to the Pipeline section, and copy-paste the contents of `declarative-pipeline-regular-agents.groovy` into the **Script** text area.
 
-> **Note:**
-> Repeat steps 1–3 with `declarative-pipeline-spot-agents.groovy` to set 
-up the example that uses the Spot agents partition if you've selected this node partition as a part of deploying the Partner Solution. Refer to the `nodeSelector` and `tolerations` section of each script, and the Kubernetes documentation, to fully 
+> **Note**
+> Repeat steps 1–3 with `declarative-pipeline-spot-agents.groovy` to set up the example that uses the Spot agents partition if you've selected this node partition as a part of deploying the Partner Solution. Refer to the `nodeSelector` and `tolerations` section of each script, and the Kubernetes documentation, to fully 
 understand how pods are assigned to cluster partitions.
 
 4. Choose **Save**, and then choose **Build Now** on the resulting screen.
