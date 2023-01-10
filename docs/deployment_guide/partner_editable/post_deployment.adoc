@@ -73,3 +73,47 @@ understand how pods are assigned to cluster partitions.
 You now have a CI/CD pipeline that runs at a low cost on Amazon EC2 Instances. View the **Console Output** (logs) by following the link on the build page, or by choosing the flashing gray ball (or the progress bar) on the running build. 
 
 To validate that the agent is running on the desired cluster partition, run the `kubectl` commands from earlier in this section on the bastion host.
+
+## Upgrades
+Administrators can upgrade the Partner Solution at any time when updates are available from CloudBees, Amazon Web Services, and the open-source community. The most common updates can include new versions of CloudBees CI and Kubernetes, bug fixes, or new 
+features. We strongly advise that users keep their environment up-to-date and plan maintenance windows accordingly.
+
+Watch the https://github.com/aws-quickstart/quickstart-cloudbees-core[aws-quickstart/quickstart-cloudbees-core^] and https://github.com/aws-quickstart/quickstart-amazon-eks/tree/master[aws-quickstart/quickstartamazon-eks^] GitHub repositories to get notified when updates are available.
+
+Upgrading the Partner Solution means applying the latest AWS CloudFormation templates. When new templates are applied, AWS CloudFormation compares what’s running to what’s defined in the new templates. AWS CloudFormation then creates, replaces, updates, or deletes resources until all resources are aligned with the new template. For more information about how AWS CloudFormation handles updates, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks.html[AWS CloudFormation Stack Updates^].
+
+When AWS adopts new versions of Kubernetes on EKS, both preceding repositories are updated. When CloudBees releases new versions of CloudBees CI, only the `quickstart-cloudbees-core repository` is updated.
+
+When the Partner Solution is upgraded, many things can happen. Running EC2 instances may be 
+terminated and replaced with new AMI versions, or Operations Center will be unavailable for a short time while its Docker image is replaced. The behavior of the environment during the upgrade ultimately depends on what has changed in the underlying AWS CloudFormation templates.
+
+To upgrade the Partner Solution to a new version, do the following:
+
+1. In the AWS CloudFormation console, navigate to the base CloudBees CI stack and choose **Update**. In earlier versions of the CloudFormation UI, this button is found in the **Actions** menu.
+2. On the **Update stack** screen, choose **Replace current template**, enter the S3 URL 
+for the new template, and then choose **Next**.
+
+> **Note** Based on your deployment type, choose one of the following options:
+> https://fwd.aws/3j4jq[Deploy CloudBees CI into a new VPC^]
+> https://fwd.aws/YQ9xp[Deploy CloudBees CI into an existing VPC^]
+
+3. On the **Specify stack details** page, your existing parameter values are displayed, and 
+the template might add new options. You can change many of the values on this screen, 
+but we recommend that you leave existing parameters as is to reduce the number of 
+moving pieces during the upgrade. You can usually change parameter values after the 
+upgrade is complete. Choose **Next**.
+
+> **Note**
+There is no parameter for the CloudBees CI version. The CloudBees CI version is defined in `cloudbees-core-workload.template.yaml`. If the new template contains a new version of Operations Center, Operations Center is upgraded to the 
+new version. Managed Controllers can be upgraded later by choosing the new Docker image version on the Managed Master configuration screen in Operations Center. Consider using a https://docs.cloudbees.com/docs/cloudbees-core/latest/cloud-admin-guide/cluster-operations[Cluster operations^] to upgrade all Managed Controllers at once, after 
+the AWS CloudFormation upgrade.
+
+4. On the **Configure stack options** page, leave everything as is, unless changes are needed, and then choose **Next**.
+5. On the **Review page**, scroll down to **Capabilities**, select all the boxes, and then choose **Update Stack**.
+6. Monitor the **Events** tab on each AWS CloudFormation stack to see what is changing during the upgrade. Also, monitor the Amazon EC2 console to observe, for example, EC2 instances being replaced one-by-one, as a new version of Kubernetes is applied.
+
+## Security
+The Partner Solution architecture for CloudBees CI implements AWS best practices for security, including deployment into private subnets and https://en.wikipedia.org/wiki/Principle_of_least_privilege[least privilege^] access. In CloudBees CI, an administrator must consider who can access the system and what they are authorized to do.
+In addition, CI/CD workloads often require credentials to access other systems for specific
+tasks. These credentials must be accessed securely by end users. For more information, see
+https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/securing/[CloudBees Core security guide^].
