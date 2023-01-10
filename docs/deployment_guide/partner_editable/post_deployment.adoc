@@ -57,3 +57,20 @@ CloudBees CI enables you to https://go.cloudbees.com/docs/cloudbees-core/cloud-a
 To configure agents to run on a given partition, you must know how to https://kubernetes.io/docs/concepts/configuration/assign-pod-node/[Assign Pods to Nodes^] and use https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[Taints and Tolerations^] in Kubernetes, which are demonstrated in the following example.
 
 One way to define an agent pod is to place its Kubernetes YAML configuration directly into a `Jenkinsfile`, instead of configuring the agent through the UI. This approach stores the entire CI/CD pipeline (including the agent definition) in source control. This has the added benefits of code reviews and a full audit trail of changes.
+
+Follow these steps to create a basic pipeline that runs in the Regular agents partition:
+
+1. On a Managed Controller, choose **New Item**.
+2. From the list of item types, choose **Pipeline**, enter an item name (for example, `declarative-pipeline-spot-agents`), and then choose **OK**.
+3. Scroll down to the Pipeline section, and copy-paste the contents of `declarative-pipeline-regular-agents.groovy` into the **Script** text area.
+
+> **Note:**
+> Repeat steps 1–3 with `declarative-pipeline-spot-agents.groovy` to set 
+up the example that uses the Spot agents partition if you've selected this node partition as a part of deploying the Partner Solution. Refer to the `nodeSelector` and `tolerations` section of each script, and the Kubernetes documentation, to fully 
+understand how pods are assigned to cluster partitions.
+
+4. Choose **Save**, and then choose **Build Now** on the resulting screen.
+
+You now have a CI/CD pipeline that runs at a low cost on Amazon EC2 Instances. View the **Console Output** (logs) by following the link on the build page, or by choosing the flashing gray ball (or the progress bar) on the running build. 
+
+To validate that the agent is running on the desired cluster partition, run the `kubectl` commands from earlier in this section on the bastion host.
