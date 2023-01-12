@@ -1,5 +1,3 @@
-# Post Deployment Steps
-
 ## Step 1. Activate CloudBees CI
 1. Open the URL from step 2.9 in the previous section. You should see an activation screen, as shown in **figure 3**.
 
