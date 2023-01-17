@@ -24,11 +24,11 @@ Store (Amazon EBS) instead of Amazon EFS. For more information, see the Data
 storage options section.
 
 > **Note**
-> *The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.
+> *The template that deploys the Partner Solution into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.
 
 ## Helm
 > **Note**
-> In March 2020, the Quick Start was updated to use https://helm.sh/[Helm^] as the means to install CloudBees CI into Amazon EKS. The use of Helm provides greater compatibility with AWS CloudFormation and reduced code maintenance. The manifests are now encapsulated by the CloudBees CI Helm chart, and the Partner Solution points to a version of the Helm chart, which is released by CloudBees.
+> In March 2020, the Partner Solution was updated to use https://helm.sh/[Helm^] as the means to install CloudBees CI into Amazon EKS. The use of Helm provides greater compatibility with AWS CloudFormation and reduced code maintenance. The manifests are now encapsulated by the CloudBees CI Helm chart, and the Partner Solution points to a version of the Helm chart, which is released by CloudBees.
 
 The CloudBees CI Helm chart has a `values.yaml` file, which supports several configuration 
 options (values). For example, the `OperationsCenter.HostName` value gives Operations Center a user-friendly Domain Name System (DNS) name, like `cloudbees-ci.example.com`, instead of using the default Load Balancer URL. Since everyone who uses this value has a different DNS name, it must be configurable using AWS CloudFormation. While it is possible to expose every Helm value as an AWS CloudFormation parameter, it would be difficult to maintain, so CloudBees contributed a new feature, the `CustomValueYaml` property, to the https://aws.amazon.com/quickstart/architecture/amazon-eks/[Amazon EKS Partner Solution framework^].
