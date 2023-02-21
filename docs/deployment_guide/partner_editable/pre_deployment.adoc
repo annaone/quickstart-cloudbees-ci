@@ -67,7 +67,7 @@ permissions for the resources and actions the templates deploy. The Administrato
 | **ELB load balancers**
 | 1
 
-| **r5.xlarge instances**
+| **t3.large instances**
 | 3
 
 | **m5.large instances**
