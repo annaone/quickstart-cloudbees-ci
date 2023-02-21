@@ -15,7 +15,7 @@ user@3.93.136.235`
 * `kubectl -n cloudbees-core exec cjoc-0 -- cat /var/jenkins_home/secrets/initialAdminPassword`
 
 3. Use the **initialAdminPassword** to proceed with the Getting Started wizard.
-4. Choose the **Request a trial license** button and fill in the form to use CloudBees CI for 15 days, free of charge.
+4. Choose the **Request a trial license** button and fill in the form to use CloudBees CI for 14 days, free of charge.
 5. Choose **Install suggested plugins** to obtain the recommended set of plugins, or choose **Select plugins to install** to customize the installation, if you’re an advanced user.
 6. If an incremental upgrade is available, we recommend that you choose the **Install** button to install it.
 7. Create an administrator or choose **Continue as admin** to proceed with the default administrator account. (The administrator’s name is **admin**, and the password is determined by **initialAdminPassword**.)
