@@ -41,13 +41,14 @@ Although it is possible to add plugins to Operations Center, this component of t
 
 If no additional configuration is provided, agent pods launched by the Kubernetes plugin run in the Masters partition of the EKS cluster. To validate this behavior, run the following commands on the bastion host while a pipeline is running:
 
-`#display nodes with partition info
+----
+#display nodes with partition info
 kubectl get nodes -o custom-columns=NAME:.metadata.name,PARTITION:.metadata.labels.partition --
 sort-by=.metadata.labels.partition
 
 #display pods with node info
 kubectl get pod -n cloudbees-core -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName`
-
+----
 Agents are resource intensive, so we recommend separating them from masters. The Partner Solution provides a method for doing so with the additional agent pools.
 
 CloudBees CI enables you to https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/agents/#managing-agents[configure a Kubernetes agent^] globally in Operations Center and to set default values for pods and containers that are launched by the Kubernetes shared cloud. You can use these features to enforce which partition an agent runs on, individually or globally.
