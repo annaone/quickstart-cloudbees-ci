@@ -46,7 +46,7 @@ Parameters:
     Description: Initial number of "Regular Agents" node instances
     Type: Number
   NumberOfSpotNodes:
-    Default: 3
+    Default: 0
     Description: Initial number of "Spot Agents" node instances
     Type: Number
   NodeVolumeSize:
