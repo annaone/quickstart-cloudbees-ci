@@ -236,7 +236,7 @@ Parameters:
     Description: The initial number of regular agent node instances to create.
     Type: Number
   NumberOfSpotNodes:
-    Default: 3
+    Default: 0
     Description: The initial number of spot agent node instances to create.
     Type: Number
   ControllerNodeVolumeSize:
