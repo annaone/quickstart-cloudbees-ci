@@ -6,7 +6,7 @@ Deploying this Partner Solution for a new virtual private cloud (VPC) with defau
 
 image::https://github.com/ikurtz/quickstart-cloudbees-ci/blob/doc-edits/docs/images/cbci-aws-eks-arch-diagram.png[Partner Solution architecture for CloudBees CI on AWS]
 
-The Partner Solution sets up the following:
+The Partner Solution sets up the following resources by default:
 
 * A highly available architecture that spans three Availability Zones.*
 * A VPC configured with three public and three private subnets (one public and one 
