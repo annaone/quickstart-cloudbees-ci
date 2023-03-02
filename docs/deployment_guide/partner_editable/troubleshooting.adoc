@@ -21,9 +21,9 @@ For more information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/U
 
 On your local terminal, create or edit your `~/.ssh/config` file so that it looks like the following, using your own bastion IP address:
 ----
-`Host cb-core-quickstart-bastion
+Host cb-core-quickstart-bastion
  HostName 3.94.157.213
- ForwardAgent yes`
+ ForwardAgent yes
 ----
 Then add your key into the SSH authentication agent by using `ssh-add ~/path/to/key.pem`.
 Finally, log in to the bastion host with `ssh -A ec2-user@bastion.host.ip.addr`.
