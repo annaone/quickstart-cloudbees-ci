@@ -20,10 +20,10 @@ For more information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/U
 **Answer:** Kubernetes agent workers are accessed using the key pair that you created in your account before you deployed the Partner Solution. Use SSH agent forwarding to pass your key to the bastion host when you log in, so that it can be used later to access Kubernetes agent workers.
 
 On your local terminal, create or edit your `~/.ssh/config` file so that it looks like the following, using your own bastion IP address:
-
+----
 `Host cb-core-quickstart-bastion
  HostName 3.94.157.213
  ForwardAgent yes`
-
+----
 Then add your key into the SSH authentication agent by using `ssh-add ~/path/to/key.pem`.
 Finally, log in to the bastion host with `ssh -A ec2-user@bastion.host.ip.addr`.
