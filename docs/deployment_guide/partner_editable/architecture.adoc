@@ -18,11 +18,11 @@ private subnet in each Availability Zone).*
 ** Three CloudBees CI controller nodes.
 ** Three CloudBees CI regular agent nodes.
 * https://helm.sh/[Helm^] and https://kubernetes.io/docs/reference/kubectl/overview/[kubectl^] installed and configured on the bastion host.
-* CloudBees CI installed on Amazon EKS as a Kubernetes StatefulSet.
+* CloudBees CI installed on Amazon EKS as a Kubernetes `StatefulSet`.
 * An Amazon Elastic File System (Amazon EFS) file system and an https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html[EFS CSI Driver^] for 
 Multi-AZ file storage. You can configure the Partner Solution to use Amazon Elastic Block 
-Store (Amazon EBS) instead of Amazon EFS. For more information, see the Data 
-storage options section.
+Store (Amazon EBS) instead of Amazon EFS. For more information, see the **Data 
+storage options** section.
 
 > **Note**
 > *The template that deploys the Partner Solution into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.
@@ -42,7 +42,11 @@ The Partner Solution places all Amazon EKS nodes in Auto Scaling groups, but it 
 manually after you deploy the Partner Solution. You can also scale your instances up and down manually by modifying the **Desired Capacity** and **Max** for each node group in the https://console.aws.amazon.com/ec2/[Amazon EC2 console^].
 
 > **Note**
-> Important: We strongly recommend running mission-critical workloads on the regular agents partition. Otherwise, please refer to the Overview section of this deployment guide to learn more about configuring a third partition for agents to run workloads on EC2 spot instances.
+> Important: We strongly recommend running mission-critical workloads on the regular agents partition. Otherwise, please refer to the Overview section of this deployment guide to learn more about configuring a third partition for agents to run workloads on EC2 spot instances. The following section only applies to an integration with EC2 spot instances.
+
+## Spot integration
+The Spot agents partition uses an Auto Scaling group that allows multiple Amazon EC2 instance types to be launched into the same group. This makes it possible to create a diversified pool of Spot Instances without additional configuration. Due to limitations with the Cluster Autoscaler at the time of this writing, we recommend using Spot Instances of the same CPU and memory in the Spot partition. The default instance types are `m4.large`, `m5.large`, `m5a.large`, and `m5d.large`. Each instance type has 2 CPUs and 8 GiB of memory.
+Agent pods that run on the Spot agents partition are terminated and disconnected from a Managed Controller when a Spot Instance is reclaimed; they are not recovered or restarted automatically.
 
 Currently, Spot interruption events can be identified by the following:
 
