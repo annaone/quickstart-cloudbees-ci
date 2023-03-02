@@ -3,22 +3,22 @@
 
 image::https://github.com/ikurtz/quickstart-cloudbees-ci/blob/doc-edits/docs/images/unlock-cbci.png[CloudBees CI Activation Screen]
 
-1. Obtain the initialAdminPassword by accessing the EKS cluster from the bastion host. To log in to the bastion host, find the BastionIP in the Outputs tab of the base CloudBees CI stack. Then connect from your local terminal to the bastion host by using SSH, with a command similar to the following:
+1. Obtain the *_initialAdminPassword_* by accessing the EKS cluster from the bastion host. To log in to the bastion host, find the BastionIP in the Outputs tab of the base CloudBees CI stack. Then connect from your local terminal to the bastion host by using SSH, with a command similar to the following:
 
 * `chmod 400 ~/cloudbees-core.pem && ssh -i ~/cloudbees-core.pem ec2-
 user@3.93.136.235`
 
 * where `cloudbees-core.pem` refers to the key pair you created earlier in this guide.
 
-2. Use **kubectl** on the bastion host to print the **initialAdminPassword** with the following command:
+2. Use **kubectl** on the bastion host to print the *_initialAdminPassword_* with the following command:
 
 * `kubectl -n cloudbees-core exec cjoc-0 -- cat /var/jenkins_home/secrets/initialAdminPassword`
 
-3. Use the **initialAdminPassword** to proceed with the Getting Started wizard.
+3. Use the *_initialAdminPassword_* to proceed with the Getting Started wizard.
 4. Choose the **Request a trial license** button and fill in the form to use CloudBees CI for 14 days, free of charge.
 5. Choose **Install suggested plugins** to obtain the recommended set of plugins, or choose **Select plugins to install** to customize the installation, if you’re an advanced user.
 6. If an incremental upgrade is available, we recommend that you choose the **Install** button to install it.
-7. Create an administrator or choose **Continue as admin** to proceed with the default administrator account. (The administrator’s name is **admin**, and the password is determined by **initialAdminPassword**.)
+7. Create an administrator or choose **Continue as admin** to proceed with the default administrator account. (The administrator’s name is **admin**, and the password is determined by *_initialAdminPassword_*.)
 8. Ensure that the Jenkins URL looks correct on the **Instance Configuration** screen, 
 and then choose **Save and Finish**.
 9. If required, choose the **Restart** button to restart Operations Center and complete the Getting Started wizard.
@@ -32,7 +32,7 @@ The popularity of Jenkins is due, in large part, to the plugins ecosystem. You c
 * Maven and JUnit, to build a Java application and publish the test results
 * AWS Elastic Beanstalk, to deploy the Java application
 
-Although it is possible to add plugins to Operations Center, this component of the CloudBees CI architecture serves a different purpose than a Managed Master and offers a limited set of plugins in its plugin update center. To make full use of CloudBees CI, provision a Managed Controller before creating the first CI/CD pipeline. These topics are covered in a https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/getting-started/[getting started^] guide on the CloudBees website.
+Although it is possible to add plugins to Operations Center, this component of the CloudBees CI architecture serves a different purpose than a Managed Controller and offers a limited set of plugins in its plugin update center. To make full use of CloudBees CI, provision a Managed Controller before creating the first CI/CD pipeline. These topics are covered in a https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/getting-started/[getting started^] guide on the CloudBees website.
 
 ## Targeting agent pools from a pipeline
 
@@ -49,7 +49,7 @@ sort-by=.metadata.labels.partition
 #display pods with node info
 kubectl get pod -n cloudbees-core -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName`
 ----
-Agents are resource intensive, so we recommend separating them from masters. The Partner Solution provides a method for doing so with the additional agent pools.
+Agents are resource intensive, so we recommend separating them from Managed Controllers. The Partner Solution provides a method for doing so with the additional agent pools.
 
 CloudBees CI enables you to https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/agents/#managing-agents[configure a Kubernetes agent^] globally in Operations Center and to set default values for pods and containers that are launched by the Kubernetes shared cloud. You can use these features to enforce which partition an agent runs on, individually or globally.
 
@@ -104,7 +104,7 @@ upgrade is complete. Choose **Next**.
 
 > **Note**
 There is no parameter for the CloudBees CI version. The CloudBees CI version is defined in `cloudbees-core-workload.template.yaml`. If the new template contains a new version of Operations Center, Operations Center is upgraded to the 
-new version. Managed Controllers can be upgraded later by choosing the new Docker image version on the Managed Master configuration screen in Operations Center. Consider using a https://docs.cloudbees.com/docs/cloudbees-core/latest/cloud-admin-guide/cluster-operations[Cluster operations^] to upgrade all Managed Controllers at once, after 
+new version. Managed Controllers can be upgraded later by choosing the new Docker image version on the Managed Controller configuration screen in Operations Center. Consider using a https://docs.cloudbees.com/docs/cloudbees-core/latest/cloud-admin-guide/cluster-operations[Cluster operations^] to upgrade all Managed Controllers at once, after 
 the AWS CloudFormation upgrade.
 
 4. On the **Configure stack options** page, leave everything as is, unless changes are needed, and then choose **Next**.
