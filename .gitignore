@@ -21,4 +21,4 @@ awsqs-kubernetes-helm.zip
 awsqs_kubernetes*
 
 # Index files
-.html
+*.html
