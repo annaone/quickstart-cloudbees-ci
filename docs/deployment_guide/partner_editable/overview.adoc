@@ -2,12 +2,10 @@
 
 // For information about using this Partner Solution for migrations, refer to the https://{partner-solution-github-org}.github.io/{partner-solution-project-name}/migration/index.html[Migration Guide^].
 
-
-# Overview
 https://docs.cloudbees.com/docs/cloudbees-ci/latest/[CloudBees CI^] offers a modern continuous integration and continuous delivery (CI/CD) 
 solution based on the Long-Term Support (LTS) release of Jenkins. Available on AWS, CloudBees CI can run and scale on Kubernetes platforms, like https://aws.amazon.com/eks/[Amazon Elastic Kubernetes Service^] (Amazon EKS). CloudBees CI includes Operations Center, which enables administrators to quickly provision Managed Controllers for each development team. Each Managed Controller has the https://docs.cloudbees.com/plugins/ci/kubernetes[Kubernetes plugin^] pre-installed, so it can use Kubernetes to launch agent pods that run CI/CD workloads.
 
-This {partner-product-name} provides a turnkey installation of CloudBees CI on Amazon EKS and demonstrates architectural best practices like automatic scaling, segregation of agent workloads, and more. The deployment divides the Amazon EKS cluster into two partitions:
+{partner-product-name} provides a turnkey installation of CloudBees CI on Amazon EKS and demonstrates architectural best practices like automatic scaling, segregation of agent workloads, and more. The deployment divides the Amazon EKS cluster into two partitions:
 
 - The first partition runs Operations Center and Managed Controllers on EC2 on-demand instances.
 - The second partition runs regular agents on EC2 on-demand instances.
@@ -20,8 +18,8 @@ NOTE: #For advanced use cases with the intent on testing spiky workloads, a thir
 NOTE: This reference deployment uses the https://aws-quickstart.github.io/quickstart-amazon-eks/#_overview[Amazon EKS Partner Solution^] as a foundation to provide a fully managed, highly available, and certified Kubernetes-conformant control plane for CloudBees CI.
 
 Please know that we may share who uses AWS {partner-product-name} with the AWS Partner Network 
-(APN) Partner that collaborated with AWS on the content of the {partner-product-name}.
+(APN) Partner that collaborated with AWS on the content of {partner-product-name}.
 
 ## CloudBees CI on AWS
-After you deploy this {partner-product-name}, you can integrate CloudBees CI more deeply with AWS by 
-using plugins. For more information, search for AWS and Amazon in the https://plugins.jenkins.io/[Jenkins Plugins Index^]. For CloudBees CI examples, refer to the **Getting started with CloudBees CI** section in this guide.
+After you deploy {partner-product-name}, you can integrate CloudBees CI more deeply with AWS by 
+using plugins. For more information, search for AWS and Amazon in the https://docs.cloudbees.com/plugins/ci[CloudBees CI Plugins Index^]. For examples on setup, refer to the **Getting started with CloudBees CI** section in this guide.

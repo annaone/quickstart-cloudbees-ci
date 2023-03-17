@@ -1,14 +1,12 @@
 // Edit this placeholder text as necessary to describe the deployment options.
 
-# Deployment Options
+{partner-product-name} provides two deployment options:
 
-This {partner-product-name} provides two deployment options:
-
-- https://fwd.aws/wRzjn[Deploy {partner-product-short-name} into a new VPC^](end-to-end deployment). This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. CloudBees CI is then deployed into this new VPC.
+- https://fwd.aws/wRzjn[Deploy {partner-product-short-name} into a new VPC^] (end-to-end deployment). This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. {partner-product-name} is then deployed into this new VPC.
 
 - https://fwd.aws/yq3pN[Deploy {partner-product-short-name} into an existing VPC^]. This option provisions CloudBees CI
 in your existing AWS infrastructure.
 
-The {partner-product-name} templates also let you configure Classless Inter-Domain Routing (CIDR) 
+The CloudFormation Templates associated with both deployment options for {partner-product-name} also let you configure Classless Inter-Domain Routing (CIDR) 
 blocks, instance types, the initial number of managed controller and agent nodes, and volume sizes, as 
 discussed in **step 2** of the deployment steps.

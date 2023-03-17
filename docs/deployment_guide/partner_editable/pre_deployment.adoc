@@ -3,8 +3,8 @@
 # Planning the Deployment
 
 ## Specialized Knowledge
-This {partner-product-name} assumes familiarity with containers and Kubernetes. It also requires a 
-moderate level of familiarity with AWS services. If you’re new to AWS, visit the https://aws.amazon.com/getting-started/[Getting Started Resource Center^] and the https://aws.amazon.com/training/[AWS Training and Certification website^] for materials and programs that can help you develop the skills to design, deploy, and operate your infrastructure and applications on the AWS Cloud. For more information about AWS services used in this {partner-product-name}, see **Additional resources**.
+This deployment of {partner-product-name} accounts for familiarity with containers and Kubernetes. It also requires a 
+moderate level of familiarity with AWS services. If you’re new to AWS, visit the https://aws.amazon.com/getting-started/[Getting Started Resource Center^] and the https://aws.amazon.com/training/[AWS Training and Certification website^] for materials and programs that can help you develop the skills to design, deploy, and operate your infrastructure and applications on the AWS Cloud. For more information about AWS services used in {partner-product-name}, see **Additional resources**.
 
 ## AWS Account
 If you don’t already have an AWS account, create one at https://aws.amazon.com by 
@@ -13,10 +13,10 @@ call and entering a PIN using the phone keypad.
 Your AWS account is automatically signed up for all AWS services. You are charged only for the services you use.
 
 ## Technical Requirements
-By default, the {partner-product-name} creates an Elastic Load Balancing (ELB) load balancer and 
-outputs its HTTP DNS into the base CloudBees CI stack. This is how you initially access CloudBees CI (specifically, Operations Center) after you deploy the {partner-product-name}.
-If you have a domain name available (for example, http://cloudbees-ci.mycompany.com), you can use it with this {partner-product-name}, but it’s not required during installation. To supply a domain name (`OperationsCenter.HostName` Helm value), refer to the custom-values feature in the Helm section. For more information, see https://docs.cloudbees.com/docs/cloudbees-core/latest/eks-install-guide/installing-eks-using-helm#install-https[Using Helm to install CloudBees CI with HTTPS support^].
-Before you launch the {partner-product-name}, your account must be configured as specified in the 
+By default, this deployment creates an Elastic Load Balancing (ELB) load balancer and 
+outputs its HTTP DNS into the base {partner-product-name} stack. This is how you initially access {partner-product-name} (specifically, Operations Center) after you deploy {partner-product-name}.
+If you have a domain name available (for example, http://cloudbees-ci.mycompany.com), you can use it within this deployment of {partner-product-name}, but it’s not required during installation. To supply a domain name (`OperationsCenter.HostName` Helm value), refer to the custom-values feature in the Helm section. For more information, see https://docs.cloudbees.com/docs/cloudbees-core/latest/eks-install-guide/installing-eks-using-helm#install-https[Using Helm to install CloudBees CI with HTTPS support^].
+Before you launch {partner-product-name}, your account must be configured as specified in the 
 following table. Otherwise, deployment might fail.
 
 [cols="1,1"]
@@ -79,7 +79,7 @@ permissions for the resources and actions the templates deploy. The _Administrat
 |===
 
 ## Data Storage Options
-The two main components of CloudBees CI, Operations Center and Managed Controllers, use a file system to persist data. Data is stored in a folder called **Jenkins Home**, located at `/var/jenkins_home`. The {partner-product-name} offers two choices for data storage: Amazon EBS and Amazon EFS (default).
+The two main components of CloudBees CI, Operations Center and Managed Controllers, use a file system to persist data. Data is stored in a folder called **Jenkins Home**, located at `/var/jenkins_home`. This deployment of {partner-product-name} offers two choices for data storage: Amazon EBS and Amazon EFS (default).
 
 Amazon EBS volumes are scoped to a particular Availability Zone in order to offer high-speed, low-latency access to the EC2 instances they are connected to. If an Availability Zone fails, an EBS volume becomes inaccessible due to file corruption, or there is a service outage, the data on these volumes will become inaccessible. Operations Center and Managed Controller pods require this persistent data and have no mechanism to replicate the data, so we recommend frequent backups when using Amazon EBS.
 

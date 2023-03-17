@@ -3,7 +3,7 @@
 :partner-product-name: CloudBees CI
 :partner-product-short-name: CloudBees CI
 :partner-company-name: CloudBees Inc.
-:doc-month: January
+:doc-month: March
 :doc-year: 2023
 :partner-contributors: Ian Kurtz, {partner-company-name}
 // :other-contributors: Akua Mansa, Trek10

@@ -1,14 +1,12 @@
 ## Step 1. Activate CloudBees CI
 1. Open the URL from step 2.9 in the previous section. You should see an activation screen, as shown in **figure 3**.
 
-image::../../../docs/images/unlock-cbci.png[CloudBees CI Activation Screen]
+image::../images/unlock-cbci.png[CloudBees CI Activation Screen]
 
-1. Obtain the *_initialAdminPassword_* by accessing the EKS cluster from the bastion host. To log in to the bastion host, find the BastionIP in the Outputs tab of the base CloudBees CI stack. Then connect from your local terminal to the bastion host by using SSH, with a command similar to the following:
+1. Obtain the *_initialAdminPassword_* by accessing the EKS cluster from the bastion host. To log in to the bastion host, find the BastionIP in the Outputs tab of the base {partner-product-name} stack. Then connect from your local terminal to the bastion host by using SSH, with a command similar to the following:
 
 * `chmod 400 ~/cloudbees-core.pem && ssh -i ~/cloudbees-core.pem ec2-
-user@3.93.136.235`
-
-* where `cloudbees-core.pem` refers to the key pair you created earlier in this guide.
+user@3.93.136.235` where `cloudbees-core.pem` refers to the key pair you created earlier in this guide.
 
 2. Use **kubectl** on the bastion host to print the *_initialAdminPassword_* with the following command:
 
@@ -24,19 +22,19 @@ and then choose **Save and Finish**.
 9. If required, choose the **Restart** button to restart Operations Center and complete the Getting Started wizard.
 
 ## Getting started with CloudBees CI
-Before you use CloudBees CI on AWS, review the https://go.cloudbees.com/docs/cloudbees-core/cloud-reference-architecture/ra-for-eks/[CloudBees CI Reference Architecture^] for Amazon EKS. You can also use the free, self-paced https://go.cloudbees.com/training/index.html[training^] offered by CloudBees to learn best practices for administration, usage, CI/CD pipeline development, and more.
+Before you use {partner-product-name} on AWS, review the https://go.cloudbees.com/docs/cloudbees-core/cloud-reference-architecture/ra-for-eks/[CloudBees CI Reference Architecture^] for Amazon EKS. You can also use the free, self-paced https://go.cloudbees.com/training/index.html[training^] offered by CloudBees to learn best practices for administration, usage, CI/CD pipeline development, and more.
 
-The popularity of Jenkins is due, in large part, to the plugins ecosystem. You can add new functionality with plugins. For example, you can integrate CloudBees CI with the following tools and services:
+The popularity of Jenkins is due, in large part, to the plugins ecosystem. You can add new functionality with plugins. For example, you can integrate {partner-product-name} with the following tools and services:
 
 * Git, to check out code every time a developer commits to a branch
 * Maven and JUnit, to build a Java application and publish the test results
 * AWS Elastic Beanstalk, to deploy the Java application
 
-Although it is possible to add plugins to Operations Center, this component of the CloudBees CI architecture serves a different purpose than a Managed Controller and offers a limited set of plugins in its plugin update center. To make full use of CloudBees CI, provision a Managed Controller before creating the first CI/CD pipeline. These topics are covered in a https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/getting-started/[getting started^] guide on the CloudBees website.
+Although it is possible to add plugins to Operations Center, this component of the {partner-product-name} architecture serves a different purpose than a Managed Controller and offers a limited set of plugins in its plugin update center. To make full use of {partner-product-name}, provision a Managed Controller before creating the first CI/CD pipeline. These topics are covered in a https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/getting-started/[getting started^] guide on the CloudBees website.
 
 ## Targeting agent pools from a pipeline
 
-NOTE: This section assumes that you are familiar with Pipeline and Jenkinsfile. If you are unfamiliar with them, see https://jenkins.io/doc/book/pipeline/jenkinsfile/[Using a Jenkinsfile^].
+NOTE: This section assumes that you are familiar with Pipelines and Jenkinsfiles. If you are unfamiliar with them, please see https://jenkins.io/doc/book/pipeline/jenkinsfile/[Using a Jenkinsfile^].
 
 If no additional configuration is provided, agent pods launched by the Kubernetes plugin run in the Masters partition of the EKS cluster. To validate this behavior, run the following commands on the bastion host while a pipeline is running:
 
@@ -46,11 +44,11 @@ kubectl get nodes -o custom-columns=NAME:.metadata.name,PARTITION:.metadata.labe
 sort-by=.metadata.labels.partition
 
 #display pods with node info
-kubectl get pod -n cloudbees-core -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName`
+kubectl get pod -n cloudbees-core -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName
 ----
 Agents are resource intensive, so we recommend separating them from Managed Controllers. The {partner-product-name} provides a method for doing so with the additional agent pools.
 
-CloudBees CI enables you to https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/agents/#managing-agents[configure a Kubernetes agent^] globally in Operations Center and to set default values for pods and containers that are launched by the Kubernetes shared cloud. You can use these features to enforce which partition an agent runs on, individually or globally.
+{partner-product-name} enables you to https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/agents/#managing-agents[configure a Kubernetes agent^] globally in Operations Center and to set default values for pods and containers that are launched by the Kubernetes shared cloud. You can use these features to enforce which partition an agent runs on, individually or globally.
 
 To configure agents to run on a given partition, you must know how to https://kubernetes.io/docs/concepts/configuration/assign-pod-node/[Assign Pods to Nodes^] and use https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[Taints and Tolerations^] in Kubernetes, which are demonstrated in the following example.
 
@@ -62,7 +60,7 @@ Follow these steps to create a basic pipeline that runs in the Regular agents pa
 2. From the list of item types, choose **Pipeline**, enter an item name (for example, `declarative-pipeline-spot-agents`), and then choose **OK**.
 3. Scroll down to the Pipeline section, and copy-paste the contents of `declarative-pipeline-regular-agents.groovy` into the **Script** text area.
 
-NOTE: Repeat steps 1–3 with `declarative-pipeline-spot-agents.groovy` to set up the example that uses the Spot agents partition if you've selected this node partition as a part of deploying the {partner-product-name}. Refer to the `nodeSelector` and `tolerations` section of each script, and the Kubernetes documentation, to fully 
+NOTE: Repeat steps 1–3 with `declarative-pipeline-spot-agents.groovy` to set up the example that uses the Spot agents partition if you've selected this node partition as a part of deploying {partner-product-name}. Refer to the `nodeSelector` and `tolerations` section of each script, and the Kubernetes documentation, to fully 
 understand how pods are assigned to cluster partitions.
 
 4. Choose **Save**, and then choose **Build Now** on the resulting screen.
@@ -72,26 +70,26 @@ You now have a CI/CD pipeline that runs at a low cost on Amazon EC2 Instances. V
 To validate that the agent is running on the desired cluster partition, run the `kubectl` commands from earlier in this section on the bastion host.
 
 ## Upgrades
-Administrators can upgrade the {partner-product-name} at any time when updates are available from CloudBees, Amazon Web Services, and the open-source community. The most common updates can include new versions of CloudBees CI and Kubernetes, bug fixes, or new 
+Administrators can upgrade {partner-product-name} at any time when updates are available from CloudBees, Amazon Web Services, and the open-source community. The most common updates can include new versions of {partner-product-name} and Kubernetes, bug fixes, or new 
 features. We strongly advise that users keep their environment up-to-date and plan maintenance windows accordingly.
 
 Watch the https://github.com/aws-quickstart/quickstart-cloudbees-core[aws-quickstart/quickstart-cloudbees-core^] and https://github.com/aws-quickstart/quickstart-amazon-eks/tree/master[aws-quickstart/quickstart-amazon-eks^] GitHub repositories to get notified when updates are available.
 
 Upgrading the {partner-product-name} means applying the latest AWS CloudFormation templates. When new templates are applied, AWS CloudFormation compares what’s running to what’s defined in the new templates. AWS CloudFormation then creates, replaces, updates, or deletes resources until all resources are aligned with the new template. For more information about how AWS CloudFormation handles updates, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks.html[AWS CloudFormation Stack Updates^].
 
-When AWS adopts new versions of Kubernetes on EKS, both preceding repositories are updated. When CloudBees releases new versions of CloudBees CI, only the `quickstart-cloudbees-core repository` is updated.
+When AWS adopts new versions of Kubernetes on EKS, both preceding repositories are updated. When CloudBees releases new versions of {partner-product-name}, only the `quickstart-cloudbees-core repository` is updated.
 
-When the {partner-product-name} is upgraded, many things can happen. Running EC2 instances may be 
-terminated and replaced with new AMI versions, or Operations Center will be unavailable for a short time while its Docker image is replaced. The behavior of the environment during the upgrade ultimately depends on what has changed in the underlying AWS CloudFormation templates.
+When {partner-product-name} is upgraded, many things can happen. Running EC2 instances may be 
+terminated and replaced with new AMI versions, or Operations Center will be unavailable for a short time while its Docker image is updated. The behavior of the environment during the upgrade ultimately depends on what has changed in the underlying AWS CloudFormation templates.
 
-To upgrade the {partner-product-name} to a new version, do the following:
+To upgrade {partner-product-name} to a new version, do the following:
 
 1. In the AWS CloudFormation console, navigate to the base CloudBees CI stack and choose **Update**. In earlier versions of the CloudFormation UI, this button is found in the **Actions** menu.
 2. On the **Update stack** screen, choose **Replace current template**, enter the S3 URL 
 for the new template, and then choose **Next**.
 
 NOTE: Based on your deployment type, choose one of the following options:
-https://fwd.aws/3j4jq[Deploy CloudBees CI into a new VPC^]
+https://fwd.aws/3j4jq[Deploy CloudBees CI into a new VPC^] or
 https://fwd.aws/YQ9xp[Deploy CloudBees CI into an existing VPC^]
 
 3. On the **Specify stack details** page, your existing parameter values are displayed, and 
@@ -109,7 +107,7 @@ the AWS CloudFormation upgrade.
 6. Monitor the **Events** tab on each AWS CloudFormation stack to see what is changing during the upgrade. Also, monitor the Amazon EC2 console to observe, for example, EC2 instances being replaced one-by-one, as a new version of Kubernetes is applied.
 
 ## Security
-The {partner-product-name} architecture for CloudBees CI implements AWS best practices for security, including deployment into private subnets and https://en.wikipedia.org/wiki/Principle_of_least_privilege[least privilege^] access. In CloudBees CI, an administrator must consider who can access the system and what they are authorized to do.
-In addition, CI/CD workloads often require credentials to access other systems for specific
+The architecture for {partner-product-name} implements AWS best practices for security, including deployment into private subnets and https://en.wikipedia.org/wiki/Principle_of_least_privilege[least privilege^] access. In {partner-product-name}, an administrator must consider who can access the system and what they are authorized to do.
+In addition, CI/CD workloads often require credentials to access other platforms and service endpoints for specific
 tasks. These credentials must be accessed securely by end users. For more information, see
-https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/securing/[CloudBees Core security guide^].
+https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/securing/[CloudBees CI security guide^].
