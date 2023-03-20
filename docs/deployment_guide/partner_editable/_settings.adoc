@@ -7,7 +7,7 @@
 :doc-year: 2023
 :partner-contributors: Ian Kurtz, {partner-company-name}
 // :other-contributors: Akua Mansa, Trek10
-:aws-contributors: Welly Siauw, AWS Partner team
+:aws-contributors: Welly Siauw, AWS Technology Partnerships
 :aws-ia-contributors: Toni Jones, AWS Integration & Automation team
 :deployment_time: 45 minutes
 :default_deployment_region: us-east-1
