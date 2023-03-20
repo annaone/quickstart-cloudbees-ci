@@ -1,7 +1,7 @@
 
 Deploying this {partner-product-name} for a new virtual private cloud (VPC) with default parameters builds the following CloudBees CI environment in the AWS Cloud.
 
-image::../docs/images/cbci-aws-eks-arch-diagram.png[Solution Architecture for CloudBees CI on AWS,width=850,height=700]
+image::../docs/images/cbci-aws-eks-arch-diagram.png[Solution Architecture for CloudBees CI on AWS]
 
 This {partner-product-name} deployment sets up the following resources by default:
 
