@@ -1,3 +1,92 @@
 //Include any predeployment steps here, such as signing up for a Marketplace AMI or making any changes to a partner account. If there are no predeployment steps, leave this file empty.
 
-== Predeployment steps
+== Planning the Deployment
+
+=== Specialized Knowledge
+This deployment of {partner-product-name} accounts for familiarity with containers and Kubernetes. It also requires a 
+moderate level of familiarity with AWS services. If you’re new to AWS, visit the https://aws.amazon.com/getting-started/[Getting Started Resource Center^] and the https://aws.amazon.com/training/[AWS Training and Certification website^] for materials and programs that can help you develop the skills to design, deploy, and operate your infrastructure and applications on the AWS Cloud. For more information about AWS services used in {partner-product-name}, see **Additional resources**.
+
+=== AWS Account
+If you don’t already have an AWS account, create one at https://aws.amazon.com by 
+following the on-screen instructions. Part of the sign-up process involves receiving a phone 
+call and entering a PIN using the phone keypad.
+Your AWS account is automatically signed up for all AWS services. You are charged only for the services you use.
+
+=== Technical Requirements
+By default, this deployment creates an Elastic Load Balancing (ELB) load balancer and 
+outputs its HTTP DNS into the base {partner-product-name} stack. This is how you initially access {partner-product-name} (specifically, Operations Center) after you deploy {partner-product-name}.
+If you have a domain name available (for example, http://cloudbees-ci.mycompany.com), you can use it within this deployment of {partner-product-name}, but it’s not required during installation. To supply a domain name (`OperationsCenter.HostName` Helm value), refer to the custom-values feature in the Helm section. For more information, see https://docs.cloudbees.com/docs/cloudbees-core/latest/eks-install-guide/installing-eks-using-helm#install-https[Using Helm to install CloudBees CI with HTTPS support^].
+Before you launch {partner-product-name}, your account must be configured as specified in the 
+following table. Otherwise, deployment might fail.
+
+[cols="1,1"]
+|===
+|Area |Requirement
+
+|Resources
+|If necessary, request https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/[service quota increases^] for the following resources. You might do this if an existing deployment uses these resources and you exceed the default quotas with this deployment. The https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/[Service Quotas console^] displays your usage and quotas for some aspects of some services. For more information, see the https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html[AWS documentation^].
+https://console.aws.amazon.com/trustedadvisor/home?#/category/service-limits[AWS Trusted Advisor^] offers a service quotas check that displays your usage and limits for some aspects of some services.
+
+| https://aws.amazon.com/about-aws/global-infrastructure/[Regions^]
+| This deployment includes Amazon EKS and M5a/M5d instance types, which aren’t currently supported in all AWS Regions. See the current list of https://docs.aws.amazon.com/general/latest/gr/rande.html#eks_region[supported Regions for Amazon EKS^] and https://aws.amazon.com/ec2/spot/pricing/[M4 instances^] on the AWS website.
+
+| https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[Key pair^]
+| Ensure that at least one Amazon EC2 key pair exists in your AWS account in the Region 
+where you are planning to deploy the {partner-product-name}. Make note of the key pair name. You are prompted for this information during deployment. To create a key pair, follow the https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[instructions in the AWS documentation^].
+If you deploy this {partner-product-name} for testing or proof-of-concept purposes, we recommend 
+that you create a new key pair instead of specifying a key pair that’s already being used by a production instance.
+
+| https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html[IAM Permissions^]
+| To deploy the {partner-product-name}, you must log in to the AWS Management Console with IAM 
+permissions for the resources and actions the templates deploy. The _AdministratorAccess_ managed policy within IAM provides sufficient permissions, although your organization may use a custom policy with more restrictions.
+
+|===
+
+[cols="2,1"]
+|===
+| Resource | This Deployment Uses
+
+| **VPCs**
+| 1
+
+| **Elastic IP addresses**
+| 4
+
+| **Security groups**
+| 9
+
+| **IAM Roles**
+| 13
+
+| **Auto Scaling groups**
+| 4
+
+| **ELB load balancers**
+| 1
+
+| **m5.xlarge instances**
+| 3
+
+| **m5.large instances**
+| 3
+
+| **t2.micro instances**
+| 1
+
+|===
+
+=== Data Storage Options
+The two main components of CloudBees CI, Operations Center and Managed Controllers, use a file system to persist data. Data is stored in a folder called **Jenkins Home**, located at `/var/jenkins_home`. This deployment of {partner-product-name} offers two choices for data storage: Amazon EBS and Amazon EFS (default).
+
+Amazon EBS volumes are scoped to a particular Availability Zone in order to offer high-speed, low-latency access to the EC2 instances they are connected to. If an Availability Zone fails, an EBS volume becomes inaccessible due to file corruption, or there is a service outage, the data on these volumes will become inaccessible. Operations Center and Managed Controller pods require this persistent data and have no mechanism to replicate the data, so we recommend frequent backups when using Amazon EBS.
+
+You can use the CloudBees https://go.cloudbees.com/docs/plugins/backup/[backup plugin^] to perform backups to Amazon Simple Storage Service (Amazon S3) on a custom schedule. Restoring from a backup is typically performed manually using the Operations Center user interface. In some cases, Operations Center itself must be restored. To restore Operations Center, see https://docs.cloudbees.com/docs/admin-resources/latest/backup-restore/restoring-from-backup-plugin[Restoring from the CloudBees Backup Plugin^]. We recommend testing the restore procedure before a real-world failure 
+occurs.
+
+Amazon EFS file systems are scoped to an AWS Region and can be accessed from any Availability Zone in the Region the file system was created in. Using Amazon EFS as a storage class for Operations Center and Managed Controller pods allows pods to be rescheduled successfully onto healthy nodes in the event of an Availability Zone outage. Amazon EFS file systems may increase the cost of the deployment compared to the Amazon EBS option, but provide greater fault tolerance. For more information on pricing, see the https://aws.amazon.com/ebs/pricing/[Amazon EBS pricing page^] and the https://aws.amazon.com/efs/pricing/[Amazon EFS pricing page^].
+
+Agent pods use Amazon EBS. The default volume size for agent nodes is larger than managed controller nodes because CI/CD tasks typically generate a lot of data.
+
+IMPORTANT: Monitor the size of EBS volumes to prevent them from running out of space. If an EBS volume is low on space, increase its size by following the https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-modify-volume.html[instructions in the AWS documentation^].
+
+By default, agent pods run on managed controller nodes but can be configured otherwise. The default EBS volume size for managed controller nodes is minimal because, assuming you choose Amazon EFS storage, Operations Center and Managed Controllers do not store data on Amazon EBS. If you don’t configure agent pods to run on a separate node pool, the managed controller nodes may quickly run out of disk space. For more information, see **Targeting agent pools from a pipeline**.
